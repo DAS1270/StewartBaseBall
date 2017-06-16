@@ -40,7 +40,7 @@ public class BaseballGame extends Utils {
     String[][] homeTeamStats = new String[9][9];
 
     //int visitingPlayerCount = 1;
-    int homePlayerAtBat = 1;
+
 
     //Constructors - not needed due to use of getters and setters
         /*public BaseballGame(String homeTeam, String[] homeTeamPlayers, String visitingTeam, String[] visitingTeamPlayers){
@@ -125,6 +125,8 @@ public class BaseballGame extends Utils {
         //public void playHalfInning(String teamName, String[] visitingTeam){
         int outs = 0;
         String hits;
+        int homePlayerAtBat = 1;
+
         while (outs < 3) {
 
             // Generate random number
@@ -132,8 +134,8 @@ public class BaseballGame extends Utils {
             // evaluate bases for runs TIP: use another method "evalBases()"
             for (int i = 0; i < visitingTeamPlayers.length; i++) {
                 hits = generateHit();
-                visitingTeamStats[inning][i]= hits;    ///hits then players     //Integer.toString(hits);
-                if (hits.contains("Out") ) {
+                visitingTeamStats[inning][i] = hits;    ///hits then players     //Integer.toString(hits);
+                if (hits.contains("Out")) {
                     outs++;
                 }
                 if (hits.contains("Home Run")) {
@@ -144,18 +146,23 @@ public class BaseballGame extends Utils {
                         homeTeamRuns++;
                     }
                 }
+                if (i == 8) i = 0;
+                if (outs == 3){
+                    System.out.println("Break??");
+                    break;
+                }
             }
+        }
+    }
+}
 
-        /*public void evalBases() {
+            /*public void evalBases() {
             int basePosition = 1; ///pass from playHalfInning
             int currentPlayerBat =
 
             // keep track of who needs to bat next
             // after player 9 you need to go to 1
         }*/
-        }
-    }
-}
 
 //evaluate current players base and increment by next player's hit.
 
