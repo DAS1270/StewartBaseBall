@@ -72,11 +72,15 @@ public class BaseballGame extends Utils {
 
     public void setVisitingTeamPlayers(String[] teamPlayers) {}
 
-    public void getVisitingTeamPlayers(){return visitingTeamPlayers}
+    public String[] getVisitingTeamPlayers(){
+        return visitingTeamPlayers;
+    }
 
     public void setHomeTeamPlayers(String[] teamPlayers) {}
 
-    public void getHomeTeamPlayers(){return homeTeamPlayers}
+    public String[] getHomeTeamPlayers(){
+        return homeTeamPlayers;
+    }
 
     public void printTeamsAndPlayers() {
         System.out.println("Home Team and Players: " +homeTeam+"\n"+homeTeamPlayers);
