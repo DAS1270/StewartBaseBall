@@ -71,6 +71,7 @@ public class BaseballGame extends Utils {
     }
 
     public void setVisitingTeamPlayers(String[] teamPlayers) {
+        this.visitingTeamPlayers = teamPlayers;
     }
 
     public String[] getVisitingTeamPlayers() {
@@ -78,6 +79,7 @@ public class BaseballGame extends Utils {
     }
 
     public void setHomeTeamPlayers(String[] teamPlayers) {
+        this.homeTeamPlayers = teamPlayers;
     }
 
     public String[] getHomeTeamPlayers() {
@@ -85,8 +87,8 @@ public class BaseballGame extends Utils {
     }
 
     public void printTeamsAndPlayers() {
-        System.out.println("Home Team and Players: " + homeTeam + "\n" + homeTeamPlayers);
-        System.out.println("Home Team and Players: " + visitingTeam + "\n" + visitingTeamPlayers);
+        System.out.println("Home Team and Players: " + homeTeam + "\n" + Arrays.toString(homeTeamPlayers));
+        System.out.println("Home Team and Players: " + visitingTeam + "\n" + Arrays.toString(homeTeamPlayers));
     }
 
     /*public void generateGame() {
