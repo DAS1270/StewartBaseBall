@@ -10,8 +10,6 @@ import java.util.List;
  */
 
 public class BaseballGame extends Utils {
-
-    //Game Variables
     //Teams - don't need to define here; using setters and getters.
     private String homeTeam;
     private String visitingTeam;
@@ -19,10 +17,8 @@ public class BaseballGame extends Utils {
     //Players - don't need to define here; using setters and getters.
     //private String[] visitingTeamPlayers = {"vPlayer1", "vPlayer2", "vPlayer3", "vPlayer4", "vPlayer5", "vPlayer6", "vPlayer7", "vPlayer8", "vPlayer9"};
     //private String[] homeTeamPlayers = {"hPlayer1", "hPlayer2", "hPlayer3", "hPlayer4", "hPlayer5", "hPlayer6", "hPlayer7", "hPlayer8", "hPlayer9"};
-    //private String[] visitingTeamPlayers;
     private String[] visitingTeamPlayers;
     private String[] homeTeamPlayers;
-
 
     //Game Rules
     int totalInnnings = 9;
@@ -31,16 +27,17 @@ public class BaseballGame extends Utils {
     int inning;
     boolean gameTied;
 
-    //Play Game
-    //Game Stats
-    int bases = 0;
+    //Runs and Player Hits
     int homeTeamRuns = 0;
     int visitingTeamRuns = 0;
     String[][] visitingTeamStats = new String[9][9];
     String[][] homeTeamStats = new String[9][9];
+    int lastPlayerAtBat;
 
-    //int visitingPlayerCount = 1;
-
+    //Tracking bases
+    public boolean onBase1 = false;
+    public boolean onBase2 = false;
+    public boolean onBase3 = false;
 
     //Constructors - not needed due to use of getters and setters
         /*public BaseballGame(String homeTeam, String[] homeTeamPlayers, String visitingTeam, String[] visitingTeamPlayers){
@@ -86,11 +83,9 @@ public class BaseballGame extends Utils {
         return homeTeamPlayers;
     }
 
-    public void printTeamsAndPlayers() {
-        System.out.println("Home Team and Players: " + homeTeam + "\n" + Arrays.toString(homeTeamPlayers));
-        System.out.println("Home Team and Players: " + visitingTeam + "\n" + Arrays.toString(visitingTeamPlayers));
-    }
 
+
+    //used to debug code
     public void createStatsArrays(String team, String[] teamPlayers) {
         for (int i = 0; i < teamPlayers.length; i++) {
             if (team == visitingTeam) {
@@ -108,16 +103,22 @@ public class BaseballGame extends Utils {
         inning = 1;
         gameTied = false;
         do {
+                System.out.println("********** Start Inning:  "+inning+"  **********");
             playInning();
+            System.out.println("********** End Inning:  "+inning+"  **********");
+                System.out.println("Visiting Team Runs: "+visitingTeamRuns);
+                System.out.println("Home Team Runs: "+homeTeamRuns);
             inning++;
         }
         while ((inning <= 9) || gameTied);
     }
 
     public void playInning() {
+        System.out.println("********** Team Up:  "+visitingTeam+"  **********");
         playHalfInning(visitingTeam, visitingTeamStats);
         //playHalfInning(visitingTeam,visitingTeamPlayers);
         //playHalfInning(homeTeam,homeTeamPlayers);
+        System.out.println("********** Team Up:  "+homeTeam+"  **********");
         playHalfInning(homeTeam, homeTeamStats);
     }
 
@@ -125,46 +126,63 @@ public class BaseballGame extends Utils {
         //public void playHalfInning(String teamName, String[] visitingTeam){
         int outs = 0;
         String hits;
-        int homePlayerAtBat = 1;
+        int visitingPlayerAtBat;
+        int homePlayerAtBat;
+        int adv = 0;
 
         while (outs < 3) {
 
             // Generate random number
             // Evaluate random number against switch statement or if/else-if/else
             // evaluate bases for runs TIP: use another method "evalBases()"
-            for (int i = 0; i < visitingTeamPlayers.length; i++) {
+            for (int i = 0; i < teamSize; i++) {
                 hits = generateHit();
-                visitingTeamStats[inning][i] = hits;    ///hits then players     //Integer.toString(hits);
-                if (hits.contains("Out")) {
-                    outs++;
-                }
-                if (hits.contains("Home Run")) {
-                    if (teamName == visitingTeam) {
+                if (teamName == visitingTeam) {
+                    visitingTeamStats[inning][i] = hits;    ///hits then players     //Integer.toString(hits);
+                    if (hits.contains("Home Run")) {
                         visitingTeamRuns++;
                     }
-                    if (teamName == homeTeam) {
+                }
+                if (teamName == homeTeam) {
+                    homeTeamStats[inning][i] = hits;    ///hits then players     //Integer.toString(hits);
+                    if (hits.contains("Home Run")) {
                         homeTeamRuns++;
                     }
                 }
-                if (i == 8) i = 0;
-                if (outs == 3){
-                    System.out.println("Break??");
+                if (hits.contains("Out")) {
+                    outs++;
+                }
+                switch (hits) {
+                    case "Single":
+                        //onBase1 = true;
+                        adv = 1;
+                        break;
+                    case "Double":
+                        //onBase2 = true;
+                        adv = 2;
+                        break;
+                    case "Triple":
+                        //onBase3 = true;
+                        adv = 3;
+                    default:
+                        break;
+                }
+                System.out.println(visitingTeamPlayers[i]+": "+hits);
+                // Keep track of who needs to bat next.  After player 9 you need to go to 1
+                if (i == 8) {
+                    i = 0;
+                }
+                if (outs == 3) {
+                    System.out.println("3 OUTS - Switch!!");
+                    visitingPlayerAtBat = i;
                     break;
                 }
             }
+
         }
     }
 }
 
-            /*public void evalBases() {
-            int basePosition = 1; ///pass from playHalfInning
-            int currentPlayerBat =
-
-            // keep track of who needs to bat next
-            // after player 9 you need to go to 1
-        }*/
-
 //evaluate current players base and increment by next player's hit.
 
-// keep track of who needs to bat next
-// after player 9 you need to go to 1
+
