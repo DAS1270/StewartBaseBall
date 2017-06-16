@@ -41,7 +41,6 @@ public class BaseballGame extends Utils {
 
     //int visitingPlayerCount = 1;
     int homePlayerAtBat = 1;
-    int rangeFactor = 100;
 
     //Constructors - not needed due to use of getters and setters
         /*public BaseballGame(String homeTeam, String[] homeTeamPlayers, String visitingTeam, String[] visitingTeamPlayers){
@@ -49,10 +48,10 @@ public class BaseballGame extends Utils {
             this.homeTeamPlayers = homeTeamPlayers;
             this.visitingTeam = visitingTeam;
             this.visitingTeamPlayers = visitingTeamPlayers;
-        }*/
+        }
 
     public BaseballGame() {
-    }
+    }*/
 
     //Setters and Getters
     public void setHomeTeam(String homeTeam) {
@@ -63,21 +62,28 @@ public class BaseballGame extends Utils {
         return homeTeam;
     }
 
-    public String getVisitingTeam() {
-        return visitingTeam;
-    }
-
     public void setVisitingTeam(String visitingTeam) {
         this.visitingTeam = visitingTeam;
     }
 
-    public void setVisitingTeamPlayers(String[] teamPlayers) {
+    public String getVisitingTeam() {
+        return visitingTeam;
     }
 
-    public void setHomeTeamPlayers(String[] teamPlayers) {
+    public void setVisitingTeamPlayers(String[] teamPlayers) {}
+
+    public void getVisitingTeamPlayers(){return visitingTeamPlayers}
+
+    public void setHomeTeamPlayers(String[] teamPlayers) {}
+
+    public void getHomeTeamPlayers(){return homeTeamPlayers}
+
+    public void printTeamsAndPlayers() {
+        System.out.println("Home Team and Players: " +homeTeam+"\n"+homeTeamPlayers);
+        System.out.println("Home Team and Players: " +visitingTeam+"\n"+visitingTeamPlayers);
     }
 
-    public void generateGame() {
+    /*public void generateGame() {
         inning = 1;
         gameTied = false;
         do {
@@ -127,8 +133,6 @@ public class BaseballGame extends Utils {
             // after player 9 you need to go to 1
         }*/
         }
-    }
-}
 
 
 //evaluate current players base and increment by next player's hit.

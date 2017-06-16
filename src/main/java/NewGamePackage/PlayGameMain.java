@@ -18,6 +18,8 @@ public class PlayGameMain {
         startGame.setHomeTeamPlayers(homeTeamPlayers);
         startGame.setVisitingTeam(visitingTeam);
         startGame.setVisitingTeamPlayers(visitingTeamPlayers);
+
+        startGame.printTeamsAndPlayers();
         }
     }
 
