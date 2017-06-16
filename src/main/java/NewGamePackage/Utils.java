@@ -20,19 +20,24 @@ public class Utils {
         String hit;
         int nbr = (int) (Math.random()* rangeFactor);
         if (nbr < 70) {
-            hit = "Out";    //hit = 0;
+            hit = "Out";
+            //hit = 0;
             System.out.println("Out!");
         } else if (nbr > 70 && nbr < 88) {
-            hit = "Single"; //hit = 1;
+            hit = "Single";
+            //hit = 1;
             System.out.println("Hit: Single");
         } else if (nbr > 87 && nbr < 95) {
-            hit = "Double"; //hit = 2;
+            hit = "Double"; //
+            //hit = 2;
             System.out.println("Hit: Double");
         } else if (nbr > 94 && nbr < 97) {
-            hit = "Triple"; //hit = 3;
+            hit = "Triple"; //
+            //hit = 3;
             System.out.println("Hit: Triple");
         } else {
-            hit = "Home Run";   //hit = 4;
+            hit = "Home Run";
+            //hit = 4;
             System.out.println("Home Run!");
         }
         return hit;

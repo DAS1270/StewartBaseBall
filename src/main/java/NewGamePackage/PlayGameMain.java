@@ -19,7 +19,6 @@ public class PlayGameMain {
         startGame.setVisitingTeam(visitingTeam);
         startGame.setVisitingTeamPlayers(visitingTeamPlayers);
 
-        startGame.printTeamsAndPlayers();
 
         }
     }

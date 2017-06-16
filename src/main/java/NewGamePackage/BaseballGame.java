@@ -88,10 +88,23 @@ public class BaseballGame extends Utils {
 
     public void printTeamsAndPlayers() {
         System.out.println("Home Team and Players: " + homeTeam + "\n" + Arrays.toString(homeTeamPlayers));
-        System.out.println("Home Team and Players: " + visitingTeam + "\n" + Arrays.toString(homeTeamPlayers));
+        System.out.println("Home Team and Players: " + visitingTeam + "\n" + Arrays.toString(visitingTeamPlayers));
     }
 
-    /*public void generateGame() {
+    public void createStatsArrays(String team, String[] teamPlayers) {
+        for (int i = 0; i < teamPlayers.length; i++) {
+            if (team == visitingTeam) {
+                visitingTeamStats[0][i] = teamPlayers[i];
+            }
+            if (team == homeTeam) {
+                homeTeamStats[0][i] = teamPlayers[i];
+            }
+            System.out.println(Arrays.toString(homeTeamStats));
+            System.out.println(Arrays.toString(visitingTeamStats));
+        }
+    }
+
+    public void generateGame() {
         inning = 1;
         gameTied = false;
         do {
@@ -108,8 +121,8 @@ public class BaseballGame extends Utils {
         playHalfInning(homeTeam, homeTeamStats);
     }
 
-    public void playHalfInning(String teamName,String[][] team) {
-    //public void playHalfInning(String teamName, String[] visitingTeam){
+    public void playHalfInning(String teamName, String[][] team) {
+        //public void playHalfInning(String teamName, String[] visitingTeam){
         int outs = 0;
         String hits;
         while (outs < 3) {
@@ -117,20 +130,20 @@ public class BaseballGame extends Utils {
             // Generate random number
             // Evaluate random number against switch statement or if/else-if/else
             // evaluate bases for runs TIP: use another method "evalBases()"
-            for(int i = 0; i < visitingTeamPlayers.length + 1; i++){
-                    hits = generateHit();
-                    visitingTeamStats[i][inning] = hits;          //Integer.toString(hits);
-                    if (hits == "Out"){
-                        outs++;
+            for (int i = 0; i < visitingTeamPlayers.length; i++) {
+                hits = generateHit();
+                visitingTeamStats[inning][i]= hits;    ///hits then players     //Integer.toString(hits);
+                if (hits.contains("Out") ) {
+                    outs++;
+                }
+                if (hits.contains("Home Run")) {
+                    if (teamName == visitingTeam) {
+                        visitingTeamRuns++;
                     }
-                    if (hits == "Home Run"){
-                        if(teamName == visitingTeam){
-                            visitingTeamRuns++;
-                        }
-                        if(teamName == homeTeam){
-                            homeTeamRuns++;
-                        }
+                    if (teamName == homeTeam) {
+                        homeTeamRuns++;
                     }
+                }
             }
 
         /*public void evalBases() {
@@ -140,8 +153,9 @@ public class BaseballGame extends Utils {
             // keep track of who needs to bat next
             // after player 9 you need to go to 1
         }*/
+        }
+    }
 }
-
 
 //evaluate current players base and increment by next player's hit.
 
