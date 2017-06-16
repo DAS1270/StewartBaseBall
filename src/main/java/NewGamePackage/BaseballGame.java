@@ -70,21 +70,23 @@ public class BaseballGame extends Utils {
         return visitingTeam;
     }
 
-    public void setVisitingTeamPlayers(String[] teamPlayers) {}
+    public void setVisitingTeamPlayers(String[] teamPlayers) {
+    }
 
-    public String[] getVisitingTeamPlayers(){
+    public String[] getVisitingTeamPlayers() {
         return visitingTeamPlayers;
     }
 
-    public void setHomeTeamPlayers(String[] teamPlayers) {}
+    public void setHomeTeamPlayers(String[] teamPlayers) {
+    }
 
-    public String[] getHomeTeamPlayers(){
+    public String[] getHomeTeamPlayers() {
         return homeTeamPlayers;
     }
 
     public void printTeamsAndPlayers() {
-        System.out.println("Home Team and Players: " +homeTeam+"\n"+homeTeamPlayers);
-        System.out.println("Home Team and Players: " +visitingTeam+"\n"+visitingTeamPlayers);
+        System.out.println("Home Team and Players: " + homeTeam + "\n" + homeTeamPlayers);
+        System.out.println("Home Team and Players: " + visitingTeam + "\n" + visitingTeamPlayers);
     }
 
     /*public void generateGame() {
@@ -136,7 +138,7 @@ public class BaseballGame extends Utils {
             // keep track of who needs to bat next
             // after player 9 you need to go to 1
         }*/
-        }
+}
 
 
 //evaluate current players base and increment by next player's hit.

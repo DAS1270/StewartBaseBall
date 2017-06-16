@@ -20,6 +20,7 @@ public class PlayGameMain {
         startGame.setVisitingTeamPlayers(visitingTeamPlayers);
 
         startGame.printTeamsAndPlayers();
+
         }
     }
 
