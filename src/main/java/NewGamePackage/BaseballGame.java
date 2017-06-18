@@ -30,14 +30,11 @@ public class BaseballGame extends Utils {
     //Runs and Player Hits
     int homeTeamRuns = 0;
     int visitingTeamRuns = 0;
-    String[][] visitingTeamStats = new String[9][9];
-    String[][] homeTeamStats = new String[9][9];
+    ArrayList<ArrayList<String>> visitingTeamStats = new ArrayList<>();
+    //String[][] visitingTeamStats = new String[9][9];
+    //String[][] homeTeamStats = new String[9][9];
     int lastPlayerAtBat;
 
-    //Tracking bases
-    public boolean onBase1 = false;
-    public boolean onBase2 = false;
-    public boolean onBase3 = false;
 
     //Constructors - not needed due to use of getters and setters
         /*public BaseballGame(String homeTeam, String[] homeTeamPlayers, String visitingTeam, String[] visitingTeamPlayers){
@@ -83,105 +80,210 @@ public class BaseballGame extends Utils {
         return homeTeamPlayers;
     }
 
-
-
-    //used to debug code
-    public void createStatsArrays(String team, String[] teamPlayers) {
-        for (int i = 0; i < teamPlayers.length; i++) {
-            if (team == visitingTeam) {
-                visitingTeamStats[0][i] = teamPlayers[i];
-            }
-            if (team == homeTeam) {
-                homeTeamStats[0][i] = teamPlayers[i];
-            }
-            System.out.println(Arrays.toString(homeTeamStats));
-            System.out.println(Arrays.toString(visitingTeamStats));
-        }
-    }
-
     public void generateGame() {
         inning = 1;
         gameTied = false;
         do {
-                System.out.println("********** Start Inning:  "+inning+"  **********");
+            System.out.println("********** Start Inning:  " + inning + "  **********");
             playInning();
-            System.out.println("********** End Inning:  "+inning+"  **********");
-                System.out.println("Visiting Team Runs: "+visitingTeamRuns);
-                System.out.println("Home Team Runs: "+homeTeamRuns);
+            System.out.println("********** End Inning:  " + inning + "  **********");
+            System.out.println("Visiting Team Runs: " + visitingTeamRuns);
+            System.out.println("Home Team Runs: " + homeTeamRuns);
             inning++;
         }
         while ((inning <= 9) || gameTied);
     }
 
     public void playInning() {
-        System.out.println("********** Team Up:  "+visitingTeam+"  **********");
-        playHalfInning(visitingTeam, visitingTeamStats);
+        System.out.println("********** Team Up:  " + visitingTeam + "  **********");
+        playVisitingInning(visitingTeam,visitingTeamPlayers);
         //playHalfInning(visitingTeam,visitingTeamPlayers);
         //playHalfInning(homeTeam,homeTeamPlayers);
-        System.out.println("********** Team Up:  "+homeTeam+"  **********");
-        playHalfInning(homeTeam, homeTeamStats);
+        System.out.println("********** Team Up:  " + homeTeam + "  **********");
+        playHomeInning(homeTeam, homeTeamPlayers);
     }
 
-    public void playHalfInning(String teamName, String[][] team) {
-        //public void playHalfInning(String teamName, String[] visitingTeam){
+    public void playVisitingInning(String teamName, String[] team) {
         int outs = 0;
-        String hits;
-        int visitingPlayerAtBat;
-        int homePlayerAtBat;
+        //Tracking bases
+        boolean onBase1 = false;
+        boolean onBase2 = false;
+        boolean onBase3 = false;
         int adv = 0;
 
-        while (outs < 3) {
+        String hits;
+        int visitingTeamRuns = 0;
+        int visitingPlayerAtBat = 0;
 
+        while (outs < 3) {
+                // Generate random number
+                // Evaluate random number against switch statement or if/else-if/else
+                // evaluate bases for runs TIP: use another method "evalBases()"
+
+                for (int i = visitingPlayerAtBat; i < teamSize; i++) {
+                    //hit
+                    hits = generateHit();
+
+                    //eval hit and set bases
+                    switch (hits) {
+                        case "Out":
+                            outs++;
+                            break;
+                        case "HomeRun":
+                            visitingTeamRuns++;
+                            break;
+                        case "Single":
+                            if(onBase1 == true) {
+                                onBase1 = false;
+                                onBase2 = true;
+                            }
+                            if(onBase2 == true){
+                                onBase2 = false;
+                                onBase3 = false;
+                            }
+                            if(onBase3 == true){
+                                onBase3 = false;
+                                visitingTeamRuns++;
+                            }
+                            break;
+                        case "Double":
+                            if (onBase1 == true) {
+                                onBase1 = false;
+                                onBase2 = false;
+                                onBase3 = true;
+                            }
+                            if(onBase2 == true){
+                                onBase2 = false;
+                                visitingTeamRuns++;
+                                }
+                            if(onBase3 == true){
+                                onBase3 = false;
+                                visitingTeamRuns++;
+                                }
+                                break;
+                        case "Triple":
+                            if (onBase1 == true) {
+                                onBase1 = false;
+                                onBase2 = false;
+                                onBase3 = true;
+                            }
+                            if(onBase2 == true){
+                                onBase2 = false;
+                                visitingTeamRuns++;
+                            }
+                            if(onBase3 == true){
+                                onBase3 = false;
+                                visitingTeamRuns++;
+                            }
+                            break;
+
+                            default: break;
+                    }
+
+                    System.out.println(visitingTeamPlayers[i] + ": " + hits);
+                    // Keep track of who needs to bat next.  After player 9 you need to go to 1
+                    if (i == 8) {
+                        visitingPlayerAtBat = i;
+                    }
+                    if (outs == 3) {
+                        System.out.println("3 OUTS - Switch!!");
+                        visitingPlayerAtBat = i;
+                        break;
+                    }
+                }
+            }
+        }
+    public void playHomeInning(String teamName, String[] team) {
+        int outs = 0;
+        //Tracking bases
+        boolean onBase1 = false;
+        boolean onBase2 = false;
+        boolean onBase3 = false;
+        int adv = 0;
+
+        String hits;
+        int homeTeamRuns = 0;
+        int homePlayerAtBat = 0;
+
+        while (outs < 3) {
             // Generate random number
             // Evaluate random number against switch statement or if/else-if/else
             // evaluate bases for runs TIP: use another method "evalBases()"
-            for (int i = 0; i < teamSize; i++) {
+
+            for (int i = homePlayerAtBat; i < teamSize; i++) {
+                //hit
                 hits = generateHit();
-                if (teamName == visitingTeam) {
-                    visitingTeamStats[inning][i] = hits;    ///hits then players     //Integer.toString(hits);
-                    if (hits.contains("Home Run")) {
-                        visitingTeamRuns++;
-                    }
-                }
-                if (teamName == homeTeam) {
-                    homeTeamStats[inning][i] = hits;    ///hits then players     //Integer.toString(hits);
-                    if (hits.contains("Home Run")) {
-                        homeTeamRuns++;
-                    }
-                }
-                if (hits.contains("Out")) {
-                    outs++;
-                }
+
+                //eval hit and set bases
                 switch (hits) {
+                    case "Out":
+                        outs++;
+                        break;
+                    case "HomeRun":
+                        homeTeamRuns++;
+                        break;
                     case "Single":
-                        //onBase1 = true;
-                        adv = 1;
+                        if(onBase1 == true) {
+                            onBase1 = false;
+                            onBase2 = true;
+                        }
+                        if(onBase2 == true){
+                            onBase2 = false;
+                            onBase3 = false;
+                        }
+                        if(onBase3 == true){
+                            onBase3 = false;
+                            homeTeamRuns++;
+                        }
                         break;
                     case "Double":
-                        //onBase2 = true;
-                        adv = 2;
+                        if (onBase1 == true) {
+                            onBase1 = false;
+                            onBase2 = false;
+                            onBase3 = true;
+                        }
+                        if(onBase2 == true){
+                            onBase2 = false;
+                            homeTeamRuns++;
+                        }
+                        if(onBase3 == true){
+                            onBase3 = false;
+                            homeTeamRuns++;
+                        }
                         break;
                     case "Triple":
-                        //onBase3 = true;
-                        adv = 3;
-                    default:
+                        if (onBase1 == true) {
+                            onBase1 = false;
+                            onBase2 = false;
+                            onBase3 = true;
+                        }
+                        if(onBase2 == true){
+                            onBase2 = false;
+                            homeTeamRuns++;
+                        }
+                        if(onBase3 == true){
+                            onBase3 = false;
+                            homeTeamRuns++;
+                        }
                         break;
+
+                    default: break;
                 }
-                System.out.println(visitingTeamPlayers[i]+": "+hits);
+
+                System.out.println(homeTeamPlayers[i] + ": " + hits);
                 // Keep track of who needs to bat next.  After player 9 you need to go to 1
                 if (i == 8) {
-                    i = 0;
+                    homePlayerAtBat = i;
                 }
                 if (outs == 3) {
                     System.out.println("3 OUTS - Switch!!");
-                    visitingPlayerAtBat = i;
+                    homePlayerAtBat = i;
                     break;
                 }
             }
-
         }
     }
-}
+    }
 
 //evaluate current players base and increment by next player's hit.
 
