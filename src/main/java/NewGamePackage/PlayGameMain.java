@@ -6,7 +6,7 @@ package NewGamePackage;
 public class PlayGameMain {
     public static void main(String[] args) {
         String homeTeam = "Sandy Springs Storm";
-        String[] homeTeamPlayers =   {"Stewart","Hopper","David","Holbrook","Kirksey","Goodman","Nava","Hassler", "Zdanciwik"};
+        String[] homeTeamPlayers =   {"Stewart","Hopper","Davis","Holbrook","Kirksey","Goodman","Nava","Hassler", "Zdanciwik"};
         //String[] homeTeamPlayers = { 0          1        2       3          4         5         6      7          8};
 
         String visitingTeam = "Sandy Plains Ice";

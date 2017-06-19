@@ -3,19 +3,12 @@ package NewGamePackage;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created by DSQ7LH on 6/13/2017.
- */
-
 public class Utils {
     private int range = 100;
     int out;
     boolean onBase1 = false;
     boolean onBase2 = false;
     boolean onBase3 = false;
-
-    //private String homeTeam = getHomeTeam();
-    //private String visitingTeam = startUtil.getVisitingTeam();
 
     //Constructors
     public Utils() {
@@ -25,6 +18,8 @@ public class Utils {
         this.range = range;
     }
 
+    //Methods
+    //returns hit Single, Double, Triple, HR, Out
     public String generateHit() {
         int rangeFactor = range;
         String hit;
@@ -53,28 +48,12 @@ public class Utils {
         return hit;
     }
 
-
-    public void printTeamsAndPlayers(String team, String[] player) {
-        System.out.println(team + "\n Players:" + Arrays.toString(player) + "\n");
-    }
-
-    //set next batter
-     /*public int setNextVisitingBatter(String[] teamArray, String playerNum) {
-        getArrayIndex(teamArray, visitingTeamPlayers[i] + 1));
-        } else {
-            nextVisitingPlayerAtBat = (getArrayIndex(visitingTeamPlayers, visitingTeamPlayers[i]));
-        }
-    }*/
-
     //evaluates hit and returns runs, based on team given.
     public int evalHits(String hit, String team) {
         int visitingHitRuns = 0;
         int homeHitRuns = 0;
 
         switch (hit) {
-            //case "Out":
-            //outs++;
-            //break;
             case "Single":
                 //set the basemen
                 if (onBase3 == true) {
@@ -173,6 +152,7 @@ public class Utils {
         } else return homeHitRuns;
     }
 
+    //evaluates hit and returns out
     public int evalOut(String hit) {
         if (hit.contains("Out")) {
             out = 1;
@@ -180,6 +160,7 @@ public class Utils {
         return out;
     }
 
+    //returns index of next player to bat
     public int getLastPlayer(ArrayList<String> teamPlayers, String player) {
         for (int i = 0; i < teamPlayers.size(); i++) {
             if (teamPlayers.get(i).equalsIgnoreCase(player)) {
@@ -189,9 +170,23 @@ public class Utils {
         return 0;
     }
 
+    //clear bases
     public void clearBasesBetweenInnings() {
         onBase1 = false;
         onBase2 = false;
         onBase3 = false;
+    }
+
+    //eval game tie
+    public boolean isGameTied(int score1, int score2){
+        if (score1 != score2){
+            return false;
+        }
+        else return true;
+    }
+
+    //print
+    public void printTeamsAndPlayers(String team, String[] player) {
+        System.out.println(team + "\n Players:" + Arrays.toString(player) + "\n");
     }
 }

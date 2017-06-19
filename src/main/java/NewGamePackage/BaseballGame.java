@@ -14,8 +14,6 @@ public class BaseballGame extends Utils {
     private String visitingTeam;
 
     //Players - don't need to define here; using setters and getters.
-    //private String[] visitingTeamPlayers = {"vPlayer1", "vPlayer2", "vPlayer3", "vPlayer4", "vPlayer5", "vPlayer6", "vPlayer7", "vPlayer8", "vPlayer9"};
-    //private String[] homeTeamPlayers = {"hPlayer1", "hPlayer2", "hPlayer3", "hPlayer4", "hPlayer5", "hPlayer6", "hPlayer7", "hPlayer8", "hPlayer9"};
     private String[] visitingTeamPlayers;
     private String[] homeTeamPlayers;
 
@@ -27,9 +25,9 @@ public class BaseballGame extends Utils {
     //Runs and Player Hits
     int homeTeamRuns = 0;
     int visitingTeamRuns = 0;
-    //ArrayList<ArrayList<String>> visitingTeamStats = new ArrayList<>();
     int lastvPlayer;
     int lasthPlayer;
+    String winner;
 
 
     //Constructors - not needed due to use of getters and setters
@@ -69,26 +67,32 @@ public class BaseballGame extends Utils {
     }
 
     public void generateGame() {
-        System.out.println("********** Visiting Team Roster **********");
-        printTeamsAndPlayers(visitingTeam, visitingTeamPlayers);
-        System.out.println("********** Home Team Roster **********");
-        printTeamsAndPlayers(homeTeam, homeTeamPlayers);
         inning = 1;
         gameTied = false;
         do {
             System.out.println(">>>>>>>>>>>> START INNING:  " + inning + "  <<<<<<<<<<<<<<");
             playInning();
             System.out.println(">>>>>>>>>>>>>  END INNING:  " + inning + "  <<<<<<<<<<<<<<<");
-            System.out.println(visitingTeam + ": " + visitingTeamRuns);
-            System.out.println(homeTeam + ": " + homeTeamRuns);
+            System.out.println("Score: \n"+visitingTeam+"- "+visitingTeamRuns+"\n"+homeTeam+"- "+homeTeamRuns);
+            gameTied = isGameTied(visitingTeamRuns,homeTeamRuns);
+            if (inning == 9 && gameTied == false){
+                System.out.println(">>>>>>>>>> END OF GAME <<<<<<<<<<<");
+                System.out.println(winner+" WON");
+                System.out.println(visitingTeam+": "+visitingTeamRuns);
+                System.out.println(homeTeam+": "+homeTeamRuns);
+            }
             inning++;
         }
         while ((inning <= 9));
-        do {
+        if (gameTied == true){
             System.out.println("GAME TIED:  EXTRA INNINGS!!");
+            System.out.println(">>>>>>>>>>>> START EXTRA INNING:  " + inning + "  <<<<<<<<<<<<<<");
             playInning();
+            System.out.println(">>>>>>>>>> END OF GAME <<<<<<<<<<<");
+            System.out.println(winner+" WINS!!");
+            System.out.println(visitingTeam+": "+visitingTeamRuns);
+            System.out.println(homeTeam+": "+homeTeamRuns);
         }
-        while (visitingTeamRuns == homeTeamRuns);
     }
 
     public void playInning() {
@@ -96,6 +100,9 @@ public class BaseballGame extends Utils {
         playVisitingInning(visitingTeam, visitingTeamPlayers);
         System.out.println("**********  " + homeTeam + "  **********");
         playHomeInning(homeTeam, homeTeamPlayers);
+        if (homeTeamRuns>visitingTeamRuns){
+            winner = getHomeTeam();
+        } else winner = getVisitingTeam();
     }
 
     public void playVisitingInning(String teamName, String[] teamPlayers) {
@@ -125,11 +132,8 @@ public class BaseballGame extends Utils {
 
                 //5- eval out count ... if 3 outs, Record next player at bat and break
                 if (outs == 3) {
-                    System.out.println("3 OUTS - Switch!!");
-                    System.out.println("Visiting Team Inning Runs: " + visitingTeamRuns);
                     lastvPlayer = getLastPlayer(visitingTeamList,visitingTeamPlayers[i]);
                     clearBasesBetweenInnings();
-                    System.out.println("Base1: "+onBase1+"Base2: "+onBase2+"Base3: "+onBase3);
                     break;
                 }
             }
@@ -165,46 +169,8 @@ public class BaseballGame extends Utils {
                 //5- eval out count ... if 3 outs, Record next player at bat and break
                 if (outs == 3) {
                     System.out.println("3 OUTS - Switch!!");
-                    System.out.println("Home Team Inning Runs: " + homeTeamRuns);
                     lasthPlayer = getLastPlayer(homeTeamList,homeTeamPlayers[i]);
                     clearBasesBetweenInnings();
-                    System.out.println("Base1: "+onBase1+"Base2: "+onBase2+"Base3: "+onBase3);
-                    break;
-                }
-            }
-        }
-    }
-    public void playExtraInnning(){
-        ArrayList<String> visitingTeamList = new ArrayList<String>(Arrays.asList(visitingTeamPlayers));
-        int outs = 0;
-        String hits = "No Hit";
-        int nextVisitingPlayerAtBat = 0;
-
-        while (gameTied != true) {
-            for (int i = lastvPlayer; i < 10; i++) {
-                //1- hit
-                hits = generateHit();
-                System.out.println(visitingTeamPlayers[i] + ": " + hits);
-
-                //2- eval hit and return runs
-                visitingTeamRuns = (evalHits(hits, "visitors")) + visitingTeamRuns;
-
-                //3- eval outs
-                //outs = outs + evalOut(hits);
-                outs = evalOut(hits) + outs;
-
-                //4- eval runner count... if player count = 8, start the line up over at 1
-                if (i == 8) {
-                    i = 0;
-                }
-
-                //5- eval out count ... if 3 outs, Record next player at bat and break
-                if (outs == 3) {
-                    System.out.println("3 OUTS - Switch!!");
-                    System.out.println("Visiting Team Inning Runs: " + visitingTeamRuns);
-                    lastvPlayer = getLastPlayer(visitingTeamList,visitingTeamPlayers[i]);
-                    clearBasesBetweenInnings();
-                    System.out.println("Base1: "+onBase1+"Base2: "+onBase2+"Base3: "+onBase3);
                     break;
                 }
             }
