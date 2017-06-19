@@ -1,5 +1,6 @@
 package NewGamePackage;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -8,7 +9,13 @@ import java.util.Arrays;
 
 public class Utils {
     private int range = 100;
-    private String[] stats;
+    int out;
+    boolean onBase1 = false;
+    boolean onBase2 = false;
+    boolean onBase3 = false;
+
+    //private String homeTeam = getHomeTeam();
+    //private String visitingTeam = startUtil.getVisitingTeam();
 
     //Constructors
     public Utils() {
@@ -31,7 +38,7 @@ public class Utils {
             //hit = 1;
             //System.out.println("Hit: Single");
         } else if (nbr > 87 && nbr < 95) {
-            hit = "Double"; //
+            hit = "Double";
             //hit = 2;
             //System.out.println("Hit: Double");
         } else if (nbr > 94 && nbr < 97) {
@@ -46,57 +53,145 @@ public class Utils {
         return hit;
     }
 
-    //to print arrays / arraylists from baseball game FIX!!
-    public void printStats(String[] stats) {
-        this.stats = stats;
-        System.out.println(stats);
+
+    public void printTeamsAndPlayers(String team, String[] player) {
+        System.out.println(team + "\n Players:" + Arrays.toString(player) + "\n");
     }
 
-    public void printTeamsAndPlayers(String team, String[] players) {
-        System.out.println("Team and Players: " + team + "\n" + Arrays.toString(players));
-    }
-
-    public int trackBases(boolean onBase1, boolean onBase2, boolean onBase3, String hits) {
-        int runs = 0;
-        //Set advancer
-        if (hits.contains("Single")) {
-            if (onBase1 = true) {
-                onBase1 = false;
-                onBase2 = true;
-            }
-            if (onBase2 = true) {
-                onBase2 = false;
-                onBase3 = true;
-            }
-            if (onBase3 = true) {
-                onBase3 = false;
-                runs++;
-            }
+    //set next batter
+     /*public int setNextVisitingBatter(String[] teamArray, String playerNum) {
+        getArrayIndex(teamArray, visitingTeamPlayers[i] + 1));
+        } else {
+            nextVisitingPlayerAtBat = (getArrayIndex(visitingTeamPlayers, visitingTeamPlayers[i]));
         }
-        if (hits.contains("Double")) {
-                if (onBase1 = true) {
-                    onBase1 = false;
+    }*/
+
+    //evaluates hit and returns runs, based on team given.
+    public int evalHits(String hit, String team) {
+        int visitingHitRuns = 0;
+        int homeHitRuns = 0;
+
+        switch (hit) {
+            //case "Out":
+            //outs++;
+            //break;
+            case "Single":
+                //set the basemen
+                if (onBase3 == true) {
+                    onBase3 = false;
+                    if (team == "visitors") {
+                        visitingHitRuns++;
+                    } else homeHitRuns++;
+                }
+                if (onBase2 == true) {
+                    onBase2 = false;
                     onBase3 = true;
                 }
-                if (onBase2 = true) {
-                    onBase2 = false;
-                    runs++;
-                }
-        }
-        if (hits.contains("Triple")) {
-                if (onBase1 = true) {
+                if (onBase1 == true) {
                     onBase1 = false;
-                    runs++;
+                    onBase2 = true;
                 }
-                if (onBase2 = true) {
-                    onBase2 = false;
-                    runs++;
-                }
-                if (onBase3 = true) {
+                //set the runner
+                onBase1 = true;
+                break;
+            case "Double":
+                if (onBase3 == true) {
                     onBase3 = false;
-                    runs++;
+                    if (team == "visitors") {
+                        visitingHitRuns++;
+                    } else homeHitRuns++;
                 }
+                if (onBase2 == true) {
+                    onBase2 = false;
+                    onBase3 = false;
+                    if (team == "visitors") {
+                        visitingHitRuns++;
+                    } else homeHitRuns++;
+                }
+                if (onBase1 == true) {
+                    onBase1 = false;
+                    onBase2 = false;
+                    onBase3 = true;
+                }
+                onBase2 = true;
+                break;
+            case "Triple":
+                if (onBase3 == true) {
+                    onBase3 = false;
+                    if (team == "visitors") {
+                        visitingHitRuns++;
+                    } else homeHitRuns++;
+                }
+                if (onBase2 == true) {
+                    onBase2 = false;
+                    onBase3 = false;
+                    if (team == "visitors") {
+                        visitingHitRuns++;
+                    } else homeHitRuns++;
+                }
+                if (onBase1 == true) {
+                    onBase1 = false;
+                    onBase2 = false;
+                    onBase3 = false;
+                    if (team == "visitors") {
+                        visitingHitRuns++;
+                    } else homeHitRuns++;
+                }
+                onBase3 = true;
+                break;
+            case "Home Run":
+                if (onBase1 == true) {
+                    onBase1 = false;
+                    onBase2 = false;
+                    onBase3 = false;
+                    if (team == "visitors") {
+                        visitingHitRuns++;
+                    } else homeHitRuns++;
+                }
+                if (onBase2 == true) {
+                    onBase2 = false;
+                    onBase3 = false;
+                    if (team == "visitors") {
+                        visitingHitRuns++;
+                    } else homeHitRuns++;
+                }
+                if (onBase3 == true) {
+                    onBase3 = false;
+                    if (team == "visitors") {
+                        visitingHitRuns++;
+                    } else homeHitRuns++;
+                }
+                if (team == "visitors") {
+                visitingHitRuns++;
+                } else homeHitRuns++;
+                break;
+            default:
+                break;
         }
-    return runs;
+        if (team == "visitors") {
+            return visitingHitRuns;
+        } else return homeHitRuns;
+    }
+
+    public int evalOut(String hit) {
+        if (hit.contains("Out")) {
+            out = 1;
+        } else out = 0;
+        return out;
+    }
+
+    public int getLastPlayer(ArrayList<String> teamPlayers, String player) {
+        for (int i = 0; i < teamPlayers.size(); i++) {
+            if (teamPlayers.get(i).equalsIgnoreCase(player)) {
+                return i + 1;
+            }
+        }
+        return 0;
+    }
+
+    public void clearBasesBetweenInnings() {
+        onBase1 = false;
+        onBase2 = false;
+        onBase3 = false;
     }
 }
